@@ -3,10 +3,15 @@
 import sys
 
 from iss import ISS
+import json, base64
 
 beta = sys.stdin.readline().strip()
 
 obj = ISS()
+
+if (len(sys.argv) >= 2):
+  obj.setParamsArray(json.loads(base64.b64decode(sys.argv[1])))
+
 print obj.getInitialOrientation(beta)
 
 sys.stdout.flush()
