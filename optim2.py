@@ -132,6 +132,6 @@ def getscore(variables):
 p = GLP(getscore, x0=startPoint, lb=lbs, ub=ubs, maxIter=100, maxFunEvals=100000)
 p.fTol = 0.00000001
 
-r = p.maximize('de',iprint=1,plot=0)
+r = p.maximize('gsubg',iprint=1,plot=0)
 
 print p.xf, p.ff, p.rf
