@@ -11,18 +11,19 @@ import pipes
 import base64
 import sys
 import random
+import pymongo
 
 from openopt import GLP
 from numpy import *
 
 
 PARAMS = {
-  "72": {'backpanels_angle': -0.0085394627603317379, 'frontpanels_angle': 0.023438086430557007, 'fast_cycle_2_accel': 0.33931555737718289, 'yaw': 0.0, 'fast_cycle_1_start': 3.0859093022032069, 'fast_cycle_1_length': 1.7438042093649595, 'fast_cycle_1_accel': 0.29948464172964662, 'fast_cycle_2_length': 2.077661185972699, 'fast_cycle_2_start': 4.9160996064710663},
-  "74": {'backpanels_angle': -0.040463658494283905, 'backpanels_phase': 5.2036001201666853, 'frontpanels_angle': 0.31768531282514034, 'fast_cycle_2_accel': 0.2399412725174822, 'backpanels_amplitude': 2.8527311385321679, 'frontpanels_phase': 5.4109258225195829, 'fast_cycle_1_start': 3.0806075316995525, 'fast_cycle_1_length': 1.7409493623038732, 'fast_cycle_1_accel': 0.23923337055832766, 'fast_cycle_2_length': 2.0885153470649493, 'frontpanels_amplitude': -0.50776905267858585, 'yaw': 0.00029972257465681659, 'fast_cycle_2_start': 4.933348883207836},
+  "72": {"backpanels_angle": -0.011061610693856916, "backpanels_phase": 0, "frontpanels_angle": 0.004553825949405098, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.916099606471066},
+  "74": {"backpanels_angle": -0.037320679095769964, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.31232240374470255, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
   
-  "-70": {'backpanels_angle': -0.0031205354155288837, 'frontpanels_angle': 0.003306896943848182, 'fast_cycle_2_accel': 0.35193894017534844, 'yaw': 0.0, 'fast_cycle_1_start': 3.2064574031683728, 'fast_cycle_1_length': 1.7713782005406706, 'fast_cycle_1_accel': 0.34986622845796067, 'fast_cycle_2_length': 2.1472054569607355, 'fast_cycle_2_start': 4.7932891294498692},
+  "-70": {"backpanels_angle": -0.15560058325724685, "backpanels_phase": 0, "frontpanels_angle": -0.023296731200954018, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
   #"-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.31543461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0.0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
-  "-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.30243461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
+  "-74": {"backpanels_angle": 0.060723431464296082, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715},
 
 
   #example
@@ -60,20 +61,22 @@ VARS = [
 
   #name, #lower bound, #upper bound
 
-  ["yaw", 0, math.radians(7),True],
-  ["frontpanels_angle",-0.5,0.5,True],
-  ["backpanels_angle",-0.5,0.5,True],
-  ["frontpanels_amplitude",-3,3,True],
-  ["backpanels_amplitude",-3,3,True],
-  ["frontpanels_phase",0,2 * math.pi,True],
-  ["backpanels_phase",0,2 * math.pi,True],
+  ["yaw", 0, math.radians(7),False],
 
-  ["fast_cycle_1_start",2,4,True],
-  ["fast_cycle_1_length",0,3,True],
-  ["fast_cycle_1_accel",0,0.4,True],
-  ["fast_cycle_2_start",4,6,True],
-  ["fast_cycle_2_length",0,3,True],
-  ["fast_cycle_2_accel",0,0.4,True]
+  ["frontpanels_angle",-0.5,0.5,True],
+  ["frontpanels_amplitude",-3,3,False],
+  ["frontpanels_phase",0,2 * math.pi,False],
+  
+  ["backpanels_angle",-0.5,0.5,True],
+  ["backpanels_amplitude",-3,3,False],
+  ["backpanels_phase",0,2 * math.pi,False],
+
+  ["fast_cycle_1_start",2,4,False],
+  ["fast_cycle_1_length",0,3,False],
+  ["fast_cycle_1_accel",0,0.4,False],
+  ["fast_cycle_2_start",4,6,False],
+  ["fast_cycle_2_length",0,3,False],
+  ["fast_cycle_2_accel",0,0.4,False]
 
 ]
 
@@ -129,9 +132,18 @@ def getscore(variables):
 
 
 
-p = GLP(getscore, x0=startPoint, lb=lbs, ub=ubs, maxIter=100, maxFunEvals=100000)
-p.fTol = 0.00000001
+p = GLP(getscore, x0=startPoint, lb=lbs, ub=ubs, maxIter=100, maxFunEvals=10000)
+p.fOpt = 170000 #Optimal value we could have
 
-r = p.maximize('de',iprint=1,plot=0)
+r = p.maximize('de', iprint=1, plot=0, population=10) #, searchDirectionStrategy="best")
+#r = p.maximize('galileo', iprint=1, plot=0, population=5)
 
-print p.xf, p.ff, p.rf
+#from pymongo import MongoClient
+
+#cl = MongoClient("mongodb://iss:station@linus.mongohq.com:10066/iss-results")
+
+
+#connection = pymongo.Connection('localhost', 10066)
+
+print "Solution vector: %s" % p.xf
+print "Max value: %s" % p.ff

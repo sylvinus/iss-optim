@@ -37,12 +37,12 @@ other insteresting possible starts:
 """
 
 PARAMS = {
-  "72": {'backpanels_angle': -0.0085394627603317379, 'frontpanels_angle': 0.023438086430557007, 'fast_cycle_2_accel': 0.33931555737718289, 'yaw': 0.0, 'fast_cycle_1_start': 3.0859093022032069, 'fast_cycle_1_length': 1.7438042093649595, 'fast_cycle_1_accel': 0.29948464172964662, 'fast_cycle_2_length': 2.077661185972699, 'fast_cycle_2_start': 4.9160996064710663},
-  "74": {'backpanels_angle': -0.040463658494283905, 'backpanels_phase': 5.2036001201666853, 'frontpanels_angle': 0.31768531282514034, 'fast_cycle_2_accel': 0.2399412725174822, 'backpanels_amplitude': 2.8527311385321679, 'frontpanels_phase': 5.4109258225195829, 'fast_cycle_1_start': 3.0806075316995525, 'fast_cycle_1_length': 1.7409493623038732, 'fast_cycle_1_accel': 0.23923337055832766, 'fast_cycle_2_length': 2.0885153470649493, 'frontpanels_amplitude': -0.50776905267858585, 'yaw': 0.00029972257465681659, 'fast_cycle_2_start': 4.933348883207836},
+  "72": {"backpanels_angle": -0.011061610693856916, "backpanels_phase": 0, "frontpanels_angle": 0.004553825949405098, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.916099606471066},
+  "74": {"backpanels_angle": -0.037320679095769964, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.31232240374470255, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
   
-  "-70": {'backpanels_angle': -0.0031205354155288837, 'frontpanels_angle': 0.003306896943848182, 'fast_cycle_2_accel': 0.35193894017534844, 'yaw': 0.0, 'fast_cycle_1_start': 3.2064574031683728, 'fast_cycle_1_length': 1.7713782005406706, 'fast_cycle_1_accel': 0.34986622845796067, 'fast_cycle_2_length': 2.1472054569607355, 'fast_cycle_2_start': 4.7932891294498692},
+  "-70": {"backpanels_angle": -0.15560058325724685, "backpanels_phase": 0, "frontpanels_angle": -0.023296731200954018, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
   #"-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.31543461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0.0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
-  "-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.30243461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
+  "-74": {"backpanels_angle": 0.060723431464296082, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715},
 
 
   #example
@@ -84,6 +84,8 @@ def anglediff(angle1, angle2):
 def posdegrees(grad):
   return (math.degrees(grad) + 360) % 360
 
+def addvect(vect1, vect2):
+  return [vect1[0]+vect2[0],vect1[1]+vect2[1],vect1[2]+vect2[2]]
 
 # returns alpha, beta
 # TODO fix this crap, doesn't work w/ yaw
@@ -99,6 +101,17 @@ def vect2angle(vect):
     alpha = -acos(min(1, max(-1, -vect[2] / cos(beta))))
 
   return [alpha, beta]
+
+def angle2vect(angle):
+  alpha, beta = angle
+  if alpha==0 and beta==0:
+    return [0,0,0]
+  return [
+    cos(beta) * sin(alpha),
+    - sin(beta),
+    - cos(beta) * cos(alpha)
+  ]
+
 
 """
 def vect2angle2(vect):
@@ -127,23 +140,21 @@ class ISS:
 
   def setParamsArray(self, params):
     self.paramsArray = params
-    #f = open("lastparams.json","w")
-    #json.dump(params, f)
-    #f.close()
+    
 
   # Public interface methods
   def getInitialOrientation(self, beta):
     self.params = self.paramsArray[str(int(float(beta)))]
     self.beta = math.radians(float(beta))
-    self.yaw = self.params["yaw"]
+    self.yaw = 0 #math.radians(7) #self.params["yaw"]
     return posdegrees(self.yaw)
 
   def getStateAtMinute(self, minute):
     self.minute = int(minute)
     self.alpha = math.radians(self.minute * 360.0 / 92)
 
-    #print self.getSunVector(minute)
-    #print [math.degrees(x) for x in vect2angle(self.getSunVector(minute))]
+    #print [self.alpha, self.beta]
+    #print vect2angle(self.getSunVector())
     self.sun = vect2angle(self.getSunVector())
 
     # normals
@@ -164,13 +175,18 @@ class ISS:
       self.sun[0]     # PSARJ
     ]
 
+
     self.optimizeSarjAngles()
 
     self.correctPanelsForSarj()
 
     self.optimizePanelAngles()
 
-    #self.zeroBackPanels()
+    #self.zeroBackPanels(True)
+
+    betabug=0
+    if self.beta<0:
+      betabug=pi
 
     return [
       posdegrees(self.sarjs[0]),     # SSARJ
@@ -178,36 +194,42 @@ class ISS:
       posdegrees(- self.sarjs[1]),   # PSARJ
       -4.0 / 60,                      # PSARJ velo
 
-      posdegrees(- self.panels["1A"] + pi/2),   # 1A  #TODO WHY PI/3 ???
+      posdegrees(- self.panels["1A"] + pi/2 + betabug),   # 1A  #TODO WHY PI/3 ???
       0, #anglediff(self.sarjs[self.getBackSarj()], self.sun[0]),
-      posdegrees(self.panels["2A"] + pi/2),   # 2A
+      posdegrees(self.panels["2A"] + pi/2 + betabug),   # 2A
       0,
-      posdegrees(self.panels["3A"] - pi/2),   # 3A
+      posdegrees(self.panels["3A"] - pi/2 + betabug),   # 3A
       0,
-      posdegrees(- self.panels["4A"] - pi/2),   # 4A
+      posdegrees(- self.panels["4A"] - pi/2 + betabug),   # 4A
       0,
-      posdegrees(self.panels["1B"] - pi/2),     # 1B
+      posdegrees(self.panels["1B"] - pi/2 + betabug),     # 1B
       0,
-      posdegrees(- self.panels["2B"] - pi/2),     # 2B
+      posdegrees(- self.panels["2B"] - pi/2 + betabug),     # 2B
       0,
-      posdegrees(- self.panels["3B"] + pi/2),     # 3B
+      posdegrees(- self.panels["3B"] + pi/2 + betabug),     # 3B
       0,
-      posdegrees(self.panels["4B"] + pi/2),     # 4B
+      posdegrees(self.panels["4B"] + pi/2 + betabug),     # 4B
       0
     ]
 
   def correctPanelsForSarj(self):
 
-    sun_back_sarj = vect2angle(self.getSunVectorRelativeToSarj(self.getBackSarj()))
-    sun_front_sarj = vect2angle(self.getSunVectorRelativeToSarj(1 - self.getBackSarj()))
+    
+    front_vect = self.getSunVectorRelativeToSarj(1 - self.getBackSarj())
+    front_optimal_angle = atan(-front_vect[2]/front_vect[1])+pi/2
+
+    back_vect = self.getSunVectorRelativeToSarj(self.getBackSarj())
+    back_optimal_angle = atan(-back_vect[2]/back_vect[1])+pi/2
+    #print front_optimal_angle
+    #print
 
     # Use this as new base angles
     for p in self.panels:
       if p in self.listFrontSarjPanels():
         #TODO incorrect calculus
-        self.panels[p] = sun_front_sarj[1] - anglediff(self.sarjs[1 - self.getBackSarj()], self.sun[0])/10
+        self.panels[p] = front_optimal_angle #front_optimal_angle #sun[0] #sun_front_sarj[1] - anglediff(self.sarjs[1 - self.getBackSarj()], self.sun[0])/10
       else:
-        self.panels[p] = sun_back_sarj[1] - anglediff(self.sarjs[self.getBackSarj()], self.sun[0])/10
+        self.panels[p] = back_optimal_angle #sun_back_sarj[1] - anglediff(self.sarjs[self.getBackSarj()], self.sun[0])/10
 
   def optimizePanelAngles(self):
 
@@ -224,14 +246,14 @@ class ISS:
       return ["2B", "4B", "1A", "3A"]
 
   def listFrontSarjPanels(self):
-    if self.beta > 0:
+    if self.beta < 0:
       return ["1A", "3A", "3B", "1B"]
     else:
       return ["2B", "4B", "2A", "4A"]
 
-  def zeroBackPanels(self):
+  def zeroBackPanels(self, also_front_sarj=False):
     for p in self.panels:
-      if p in self.listFrontSarjPanels():
+      if p not in self.listFrontSarjPanels() or (also_front_sarj and p not in self.listFrontPanels()):
         self.panels[p] += pi
 
 
@@ -268,7 +290,7 @@ class ISS:
   # Utilities
   def getSunVector(self):
     alpha = self.alpha
-    
+
     return [
       cos(self.beta) * sin(alpha) * cos(self.yaw) - sin(self.beta) * sin(self.yaw),
       - cos(self.beta) * sin(alpha) * sin(self.yaw) - sin(self.beta) * cos(self.yaw),
@@ -276,19 +298,19 @@ class ISS:
     ]
 
   def getSunVectorRelativeToSarj(self, sarj):
-    alpha = self.sarjs[sarj]
     
-    return [
-      cos(self.beta) * sin(alpha) * cos(self.yaw) - sin(self.beta) * sin(self.yaw),
-      - cos(self.beta) * sin(alpha) * sin(self.yaw) - sin(self.beta) * cos(self.yaw),
-      - cos(self.beta) * cos(alpha)
-    ]
+    sun_vect = self.getSunVector()
+    sun_angle = vect2angle(sun_vect)
 
+    diff_angle = [anglediff(self.sarjs[sarj], sun_angle[0]), self.beta]
 
+    diff_vector = angle2vect(diff_angle)
+    return diff_vector
+    
 
 if __name__ == "__main__":
 
   obj = ISS()
-  obj.getInitialOrientation(-74)
+  obj.getInitialOrientation(-70)
   for i in range(0, 92):
     print "%d %s" % (i, ["%2.2f" % x for x in obj.getStateAtMinute(i)])
