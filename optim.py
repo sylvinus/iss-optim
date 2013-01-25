@@ -21,42 +21,15 @@ from numpy import *
 
 
 
-PARAMS = {
-  "72": {"backpanels_angle": -0.011238028948746618, "backpanels_phase": 0, "frontpanels_angle": 0.0047764511116933795, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.916099606471066},
-  "74": {"backpanels_angle": -0.037320679095769964, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.31232240374470255, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
-  
-  "-70": {"backpanels_angle": -0.14088013083327708, "backpanels_phase": 0, "frontpanels_angle": 0.002204760114096262, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
-  #"-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.31543461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0.0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
-  "-74": {"backpanels_angle": 0.060723431464296082, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715},
+
+PARAMS = {"-70": {"backpanels_angle": -0.03661858312156795, "backpanels_phase": 0, "frontpanels_angle": 0.014295270420755898, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
+ "72": {"backpanels_angle": -0.02062285024747413, "backpanels_phase": 0, "frontpanels_angle": 0.005393967826593314, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.916099606471066},
+ "74": {"backpanels_angle": -0.08011121485432518, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.34476690892469347, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
+ "-74": {"backpanels_angle": 0.06072343146429608, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715}}
 
 
-  #example
-  "-72": {
-    "yaw": 0,
-    "frontpanels_angle": 0.4,
-    "backpanels_angle": 0,
-    "fast_cycle_1_start": 3.07,
-    "fast_cycle_1_length": 1.74,
-    "fast_cycle_1_accel": 0.15,
-    "fast_cycle_2_start": 4.93,
-    "fast_cycle_2_length": 2.09,
-    "fast_cycle_2_accel": 0.21
-  },
-  "70": {"backpanels_angle": -0.15463899577456608, "frontpanels_angle": -0.031156437841873164, "fast_cycle_2_accel": 0.15097816777464132, "yaw": 0.0, "fast_cycle_1_start": 3.8116338629615298, "fast_cycle_1_length": 2.2348404440689351, "fast_cycle_1_accel": 0.09516664073371689, "fast_cycle_2_length": 2.9033926538153909, "fast_cycle_2_start": 5.6560269696997105},
+ 
 
-  # competition
-  "75": {
-    "yaw": 0,
-    "frontpanels_angle": 0.4,
-    "backpanels_angle": 0,
-    "fast_cycle_1_start": 3.07,
-    "fast_cycle_1_length": 1.74,
-    "fast_cycle_1_accel": 0.31,
-    "fast_cycle_2_start": 4.93,
-    "fast_cycle_2_length": 2.09,
-    "fast_cycle_2_accel": 0.31
-  }
-}
 
 
 beta = sys.argv[1]
@@ -65,15 +38,15 @@ VARS = [
 
   #name, #lower bound, #upper bound
 
-  ["yaw", 0, math.radians(7),False],
+  ["yaw", 0, math.radians(7), True],
 
-  ["frontpanels_angle",-0.5,0.5,True],
-  ["frontpanels_amplitude",-3,3,False],
-  ["frontpanels_phase",0,2 * math.pi,False],
+  ["frontpanels_angle",-0.5,0.5, False],
+  ["frontpanels_amplitude",-3,3,True],
+  ["frontpanels_phase",0,2 * math.pi,True],
   
-  ["backpanels_angle",-0.5,0.5,True],
-  ["backpanels_amplitude",-3,3,False],
-  ["backpanels_phase",0,2 * math.pi,False],
+  ["backpanels_angle",-0.5,0.5,False],
+  ["backpanels_amplitude",-3,3,True],
+  ["backpanels_phase",0,2 * math.pi,True],
 
   ["fast_cycle_1_start",2,4,False],
   ["fast_cycle_1_length",0,3,False],
@@ -164,7 +137,7 @@ def getscore(variables):
 p = GLP(getscore, x0=startPoint, lb=lbs, ub=ubs, maxIter=100, maxFunEvals=10000)
 p.fOpt = 170000 #Optimal value we could have
 
-r = p.maximize('de', iprint=1, plot=0, population=10) #, searchDirectionStrategy="best")
+r = p.maximize('de', iprint=1, plot=0, population=20) #, searchDirectionStrategy="best")
 #r = p.maximize('galileo', iprint=1, plot=0, population=5)
 
 connection["iss-results"].results.insert({
