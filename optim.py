@@ -27,7 +27,6 @@ PARAMS = {"-70": {"backpanels_angle": -0.03661858312156795, "backpanels_phase": 
  "74": {"backpanels_angle": -0.08011121485432518, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.34476690892469347, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
  "-74": {"backpanels_angle": 0.06072343146429608, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715}}
 
-
  
 
 
@@ -41,11 +40,11 @@ VARS = [
   ["yaw", 0, math.radians(7), True],
 
   ["frontpanels_angle",-0.5,0.5, False],
-  ["frontpanels_amplitude",-3,3,True],
+  ["frontpanels_amplitude",-4,4,True],
   ["frontpanels_phase",0,2 * math.pi,True],
   
   ["backpanels_angle",-0.5,0.5,False],
-  ["backpanels_amplitude",-3,3,True],
+  ["backpanels_amplitude",-4,4,True],
   ["backpanels_phase",0,2 * math.pi,True],
 
   ["fast_cycle_1_start",2,4,False],
@@ -87,13 +86,13 @@ def getscore(variables):
   vars = {}
   vars[beta] = {}
   for i in range(0, len(var_names)):
-    vars[beta][var_names[i]] = variables[i]
+    vars[beta][var_names[i]] = float(variables[i])
 
   tested_vars = copy(vars[beta])
 
   for k in VARS:
     if k[0] not in vars[beta]:
-      vars[beta][k[0]] = PARAMS[str(beta)].get(k[0], 0)
+      vars[beta][k[0]] = float(PARAMS[str(beta)].get(k[0], 0))
 
   #print vars
   arg = "./cli.py %s" % base64.b64encode(json.dumps(vars))
