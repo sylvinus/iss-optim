@@ -12,16 +12,20 @@ import base64
 import sys
 import random
 import pymongo
+import copy
+import datetime
 
 from openopt import GLP
 from numpy import *
 
 
+
+
 PARAMS = {
-  "72": {"backpanels_angle": -0.011061610693856916, "backpanels_phase": 0, "frontpanels_angle": 0.004553825949405098, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.916099606471066},
+  "72": {"backpanels_angle": -0.011238028948746618, "backpanels_phase": 0, "frontpanels_angle": 0.0047764511116933795, "fast_cycle_2_accel": 0.3393155573771829, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.085909302203207, "fast_cycle_1_length": 1.7438042093649595, "fast_cycle_1_accel": 0.2994846417296466, "fast_cycle_2_length": 2.077661185972699, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.916099606471066},
   "74": {"backpanels_angle": -0.037320679095769964, "backpanels_phase": 5.203600120166685, "frontpanels_angle": 0.31232240374470255, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": 2.852731138532168, "frontpanels_phase": 5.410925822519583, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 1.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 2.0885153470649493, "frontpanels_amplitude": -0.5077690526785859, "yaw": 0.0002997225746568166, "fast_cycle_2_start": 4.933348883207836},
   
-  "-70": {"backpanels_angle": -0.15560058325724685, "backpanels_phase": 0, "frontpanels_angle": -0.023296731200954018, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
+  "-70": {"backpanels_angle": -0.14088013083327708, "backpanels_phase": 0, "frontpanels_angle": 0.002204760114096262, "fast_cycle_2_accel": 0.35193894017534844, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.206457403168373, "fast_cycle_1_length": 1.7713782005406706, "fast_cycle_1_accel": 0.34986622845796067, "fast_cycle_2_length": 2.1472054569607355, "frontpanels_amplitude": 0, "yaw": 0.0, "fast_cycle_2_start": 4.793289129449869},
   #"-74": {'backpanels_angle': -0.0016813148769646935, 'frontpanels_angle': -0.31543461601882539, 'fast_cycle_2_accel': 0.18080358853662248, 'yaw': 0.0, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 1.7398855546485446, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 2.1793131225704654, 'fast_cycle_2_start': 4.929439382577715},
   "-74": {"backpanels_angle": 0.060723431464296082, "backpanels_phase": 0, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0, "frontpanels_phase": 0, "fast_cycle_1_start": 3.0699925251289315, "fast_cycle_1_length": 1.7398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 2.1793131225704654, "frontpanels_amplitude": 0, "yaw": 0, "fast_cycle_2_start": 4.929439382577715},
 
@@ -80,10 +84,21 @@ VARS = [
 
 ]
 
+
+
 var_names = [x[0] for x in VARS if x[3]]
 lbs = [x[1] for x in VARS if x[3]]
 ubs = [x[2] for x in VARS if x[3]]
 startPoint = [PARAMS[str(beta)].get(v, 0) for v in var_names]
+
+
+DB=False
+try:
+  mongoClient = pymongo.MongoClient("mongodb://iss:station@linus.mongohq.com:10066/iss-results")
+  DB = mongoClient["iss-results"]
+except e:
+  print "No Mongo: %s" % e
+
 
 try:
 
@@ -100,6 +115,8 @@ def getscore(variables):
   vars[beta] = {}
   for i in range(0, len(var_names)):
     vars[beta][var_names[i]] = variables[i]
+
+  tested_vars = copy(vars[beta])
 
   for k in VARS:
     if k[0] not in vars[beta]:
@@ -128,6 +145,18 @@ def getscore(variables):
     json.dump(best, fresults)
     fresults.close()
 
+    if DB:
+      try:
+        DB.results.insert({
+          "score":best[0],
+          "date":datetime.datetime.now(),
+          "params":vars[beta],
+          "beta":beta,
+          "tested_vars":var_names
+        })
+      except e:
+        print "MONGO INSERT ERROR:%s" % e
+
   return ret
 
 
@@ -138,12 +167,10 @@ p.fOpt = 170000 #Optimal value we could have
 r = p.maximize('de', iprint=1, plot=0, population=10) #, searchDirectionStrategy="best")
 #r = p.maximize('galileo', iprint=1, plot=0, population=5)
 
-#from pymongo import MongoClient
+connection["iss-results"].results.insert({
 
-#cl = MongoClient("mongodb://iss:station@linus.mongohq.com:10066/iss-results")
+})
 
-
-#connection = pymongo.Connection('localhost', 10066)
 
 print "Solution vector: %s" % p.xf
 print "Max value: %s" % p.ff
