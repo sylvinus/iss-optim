@@ -3,15 +3,22 @@
 from math import cos, sin, tan, acos, asin, atan, pi
 import math
 
+"""
+TODO
+ - correct for Z offset for SAWs
+ - optimal front sarj adjustment
+"""
+
+
 # Parameters are determined in function of the beta angle.
 # There is a fixed list of beta angles so we can over-optimize for that...
+PARAMS = {"-70": {"fast_cycle_3_start": 2.237929382275514, "fast_cycle_4_prelength": 0.5534151889537027, "fast_cycle_3_prelength": 0.6166746766006286, "fast_cycle_4_length": 0.07166235965547048, "fast_cycle_1_prelength": 0.9344070980381314, "fast_cycle_4_start": 4.285508941497646, "fast_cycle_2_start": 0.6895750308475449, "fast_cycle_2_prelength": 0.06295149295285885, "fast_cycle_1_start": 0.1759508632978138, "fast_cycle_1_length": 0.6935248861025821, "fast_cycle_5_prelength": 0.08173443464544534, "fast_cycle_5_start": 2.832121025678209, "fast_cycle_5_length": 0.5634218448077157, "fast_cycle_6_prelength": 0.17252622656447325, "fast_cycle_2_length": 0.35373380958548906, "fast_cycle_6_start": 4.898824827044014, "yaw": 0.0414804736024119, "fast_cycle_6_length": 0.22315927730537782, "fast_cycle_3_length": 0.7008364263314133},
+ "72": {"fast_cycle_3_start": 1.9179132087585402, "fast_cycle_4_prelength": 0.5236651653653963, "fast_cycle_3_prelength": 0.6720849953137594, "fast_cycle_4_length": 0.019490166270924144, "fast_cycle_1_prelength": 0.5863264558380866, "fast_cycle_4_start": 4.370219485764188, "fast_cycle_2_start": 0.8954338239552325, "fast_cycle_2_prelength": 0.28037852347261194, "fast_cycle_1_start": 0.016893475792793506, "fast_cycle_1_length": 0.03993646661426549, "fast_cycle_5_prelength": 0.6163168265418921, "fast_cycle_5_start": 2.903707578725052, "fast_cycle_5_length": 0.3152570215448386, "fast_cycle_6_prelength": 0.40040928196960496, "fast_cycle_2_length": 0.46515020825356856, "fast_cycle_6_start": 4.899632661924799, "yaw": 0.0001777557132575147, "fast_cycle_6_length": 0.24433323024728826, "fast_cycle_3_length": 0.40059491989964013},
+ "74": {"backpanels_angle":-0.03, "fast_cycle_3_start": 2.225200835647714, "fast_cycle_4_prelength": 0.5031835137957196, "fast_cycle_3_prelength": 0.003315289454355025, "fast_cycle_4_length": 0.024308427097226342, "fast_cycle_1_prelength": 0.6951678499746428, "fast_cycle_4_start": 4.615481260894112, "fast_cycle_2_start": 0.820239331043713, "fast_cycle_2_prelength": 0.5649022850943893, "fast_cycle_1_start": 0.0859978840153225, "fast_cycle_1_length": 0.3915483117365642, "fast_cycle_5_prelength": 0.003866266663166723, "fast_cycle_5_start": 2.958118920980893, "fast_cycle_5_length": 0.30318154576694, "fast_cycle_6_prelength": 0.21170048431356975, "fast_cycle_2_length": 0.028139875005793187, "fast_cycle_6_start": 5.0385427983053805, "yaw": 0.0, "fast_cycle_6_length": 0.2178386535284853, "fast_cycle_3_length": 0.02092372384431028},
+ "-74": {"fast_cycle_3_start": 1.9983016826923432, "fast_cycle_4_prelength": 0.3199249359758594, "fast_cycle_3_prelength": 0.22044160746709926, "fast_cycle_4_length": 0.361422243194243, "fast_cycle_1_prelength": 0.2784959548493998, "fast_cycle_4_start": 4.745282814110465, "fast_cycle_2_start": 0.40977295481606, "fast_cycle_2_prelength": 0.5383338465664779, "fast_cycle_1_start": 2.7720317689706624, "fast_cycle_1_length": 0.47768584508748724, "fast_cycle_5_prelength": 0.0187932917270459, "fast_cycle_5_start": 2.497828361022921, "fast_cycle_5_length": 0.35909821065937103, "fast_cycle_6_prelength": 0.12824500144311507, "fast_cycle_2_length": 0.023215732759460428, "fast_cycle_6_start": 5.178323186469656, "yaw": 0.020688516408021457, "fast_cycle_6_length": 0.2802575080475719, "fast_cycle_3_length": 0.3126931834589215}}
 
-# 137132.395741 {'-74': {'backpanels_phase': 1.650822742857909, 'backpanels_angle': 0.06072343146429608, 'frontpanels_angle': -0.29801433814516826, 'fast_cycle_2_accel': 0.18080358853662248, 'backpanels_amplitude': 1.4110799736234767, 'frontpanels_phase': 2.9177612801724093, 'fast_cycle_1_start': 3.0699925251289315, 'fast_cycle_1_length': 0.0, 'fast_cycle_1_accel': 0.14890684738160895, 'fast_cycle_2_length': 0.0, 'frontpanels_amplitude': -3.3197009149637786, 'yaw': 0.1, 'fast_cycle_2_start': 4.929439382577715}}
+ 
 
-PARAMS = {"-70": {"yaw": 0.03809762154801922, "fast_cycle_1_length": 2.286213287303555, "fast_cycle_2_start": 4.6661337977376505, "fast_cycle_2_length": 1.3740395795588258, "fast_cycle_1_start": 2.195794130014514, "fast_cycle_3_start": 0.329439382577715, "fast_cycle_3_length": 0.429439382577715},
- "72": {"yaw": 0.00019033077361605723, "fast_cycle_1_length": 1.3774406963952464, "fast_cycle_2_start": 4.9197843659582325, "fast_cycle_2_length": 1.351742622659343, "fast_cycle_1_start": 2.8632058147910877, "fast_cycle_3_start": 0.329439382577715, "fast_cycle_3_length": 0.429439382577715},
- "74": {"backpanels_phase": 1.7955624990894643, "backpanels_angle": -0.08011121485432518, "frontpanels_angle": 0.34476690892469347, "fast_cycle_2_accel": 0.2399412725174822, "backpanels_amplitude": -0.03280679613872517, "frontpanels_phase": 2.7945735325886796, "fast_cycle_1_start": 3.0806075316995525, "fast_cycle_1_length": 0.7409493623038732, "fast_cycle_1_accel": 0.23923337055832766, "fast_cycle_2_length": 0.8885153470649493, "frontpanels_amplitude": 2.1312337782269304, "yaw": 2.2663250365290128e-05, "fast_cycle_2_start": 4.933348883207836, "fast_cycle_3_start": 0.329439382577715, "fast_cycle_3_length": 0.429439382577715},
- "-74": {"backpanels_phase": 0.0, "backpanels_angle": 0.06072343146429608, "frontpanels_angle": -0.29801433814516826, "fast_cycle_2_accel": 0.18080358853662248, "backpanels_amplitude": 0.0, "frontpanels_phase": 0.0, "fast_cycle_1_start": 2.5699925251289315, "fast_cycle_1_length": 1.9398855546485446, "fast_cycle_1_accel": 0.14890684738160895, "fast_cycle_2_length": 1.5793131225704654, "frontpanels_amplitude": 0.0, "yaw": 0.02, "fast_cycle_2_start": 4.929439382577715, "fast_cycle_3_start": 0.329439382577715, "fast_cycle_3_length": 0.429439382577715}}
 
 
 
@@ -132,7 +139,7 @@ class ISS:
 
   def setMinute(self, m):
     self.minute = m
-    self.alpha = math.radians(self.minute * 360.0 / 92)
+    self.alpha = self.minute * 2 * pi / 92
     self.sun = vect2angle(self.getSunVector())
 
   def compute(self):
@@ -178,13 +185,16 @@ class ISS:
 
 
     self.adjustVelocities(sarj=True)
-
+    
     self.adjustFrontSarj()
-      
+
+    self.adjustVelocities(sarj=True)
 
       #self.correctPanelsForSarj()
 
     self.optimizePanelAnglesNew()
+
+    self.patchPanelAngles()
 
     #self.zeroBackPanels()
 
@@ -217,13 +227,21 @@ class ISS:
         self.minutes[m][2] = - d["BACK"]
         self.minutes[m][3] = - s["BACK"]
       self.minutes[m][4] = - d["1A"] + pi/2 + betabug   # 1A
+      self.minutes[m][5] = - s["1A"]
       self.minutes[m][6] = d["2A"] + pi/2 + betabug
+      self.minutes[m][7] = s["2A"]
       self.minutes[m][8] = d["3A"] - pi/2 + betabug
+      self.minutes[m][9] = s["3A"]
       self.minutes[m][10] = - d["4A"] - pi/2 + betabug
+      self.minutes[m][11] = - s["4A"]
       self.minutes[m][12] = d["1B"] - pi/2 + betabug
+      self.minutes[m][13] = s["1B"]
       self.minutes[m][14] = - d["2B"] - pi/2 + betabug
+      self.minutes[m][15] = - s["2B"]
       self.minutes[m][16] = - d["3B"] + pi/2 + betabug
+      self.minutes[m][17] = - s["3B"]
       self.minutes[m][18] = d["4B"] + pi/2 + betabug
+      self.minutes[m][19] = s["4B"]
 
 
     for i in range(0, 10):
@@ -236,9 +254,24 @@ class ISS:
   def setSpeeds(self, sarj=False, saw=False):
 
     for p in self.angles[0]:
+
+      if p in self.sarjs:
+        max_velocity = math.radians(0.15)
+        max_accel = math.radians(0.005)
+      elif p in self.panels:
+        max_velocity = math.radians(0.25)
+        max_accel = math.radians(0.01)
+
       if (sarj and p in self.sarjs) or (saw and p in self.panels):
         for m in range(0, 92):
-          self.speeds[(m + 1) % 92][p] = smallradians(self.angles[(m + 1) % 92][p] - self.angles[m][p]) / 60
+
+          speed = smallradians(self.angles[(m + 1) % 92][p] - self.angles[m][p]) / 60
+
+          if speed > max_velocity:
+            speed = max_velocity
+          elif speed < - max_velocity:
+            speed = -max_velocity
+          self.speeds[(m + 1) % 92][p] = speed
 
 
   def adjustVelocities(self, sarj=False, saw=False):
@@ -298,36 +331,70 @@ class ISS:
 
         diff = smallradians(self.angles[(m + 1) % 92][p] - self.angles[m][p])
 
-        if self.speeds[m][p] > max_velocity:
-          self.speeds[m][p] = max_velocity
-        elif self.speeds[m][p] < - max_velocity:
-          self.speeds[m][p] = -max_velocity
         currentSpeed = self.speeds[m][p]
+        finalSpeed = self.speeds[(m + 1) % 92][p]
 
         max_diff = get_max_possible_angular_shift(currentSpeed, max_velocity, max_velocity, max_accel)
         min_diff = get_min_possible_angular_shift(currentSpeed, -max_velocity, -max_velocity, -max_accel)
 
-        """
-        if m==8 and p=="BACK":
-          print 
-          print currentSpeed
-          print diff
-          print max_diff
-          print min_diff
-        """
+        #can the point be atteinted but not at the same speed?
+        max_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity, max_accel)
+        min_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity, -max_accel)
 
-        if diff < min_diff:
+        if diff <= min_diff + 1e-12:
           self.angles[(m + 1) % 92][p] = self.angles[m][p] + min_diff
           self.speeds[(m + 1) % 92][p] = -max_velocity
-
-        if diff > max_diff:
+        elif diff >= max_diff - 1e-12:
           self.angles[(m + 1) % 92][p] = self.angles[m][p] + max_diff
           self.speeds[(m + 1) % 92][p] = max_velocity
 
+        elif (diff > max_diff_w_speed) or (diff < min_diff_w_speed):
+
+          # equal the final speed
+          t0 = math.fabs((finalSpeed - currentSpeed) / max_accel)
+
+          diff0 = path(t0, currentSpeed, math.copysign(max_accel, (finalSpeed - currentSpeed)))
+
+          lineardiff = finalSpeed * (60 - t0)
+          if lineardiff > 0:
+            newdiff = path((60 - t0) / 2, finalSpeed, -max_accel) * 2
+          else:
+            newdiff = path((60 - t0) / 2, finalSpeed, max_accel) * 2
+
+          """
+          if p=="BACK":
+            print "ZANG", m, diff
+            print math.copysign(max_accel,(finalSpeed-currentSpeed))
+            print currentSpeed, finalSpeed
+            print diff0, t0, lineardiff, newdiff
+          
+
+          if p=="BACK":
+            print 
+            print currentSpeed, finalSpeed
+            print diff
+            print max_diff, min_diff
+            print diff >= max_diff - 1e-10
+            print max_diff_w_speed, min_diff_w_speed
+            print max_velocity, math.degrees(max_velocity)
+            print (min_diff-min_diff_w_speed) / 60
+            print self.speeds[(m + 1) % 92][p]
+            print diff * 2.0 / 60 - currentSpeed
+            print math.degrees(self.speeds[(m + 1) % 92][p])
+          """
+
+          #angle was modified, not speed
+          self.angles[(m + 1) % 92][p] = self.angles[m][p] + diff0 + newdiff
+
+        #elif diff < min_diff_w_speed:
+        #  self.speeds[(m + 1) % 92][p] = 2 * diff / 60 - currentSpeed
+        
+        
+
 
   def adjustFrontSarj(self):
-    
-    max_angle = 0.2
+
+    max_angle = 0.23
 
     for m in range(0, 92):
       diff = smallradians(self.angles[m]["FRONT"] - self.angles[m]["BACK"])
@@ -338,30 +405,26 @@ class ISS:
   # accelerate back panels (ssarj) when passing behind the station
   def optimizeSarjAngles(self):
 
-    for m in range(0, 92):
+    def tominute(alpha):
+      return alpha * 92 / (2 * pi)
 
-      def set_cycle_velocity_diff(start, length):
+    def set_cycle_velocity_diff(cycle_no):
 
-        pos_in_cycle = anglediff(self.angles[m]["BACK"], start)
+      start = self.params.get("fast_cycle_%s_start" % cycle_no, 0)
+      prelength = self.params.get("fast_cycle_%s_prelength" % cycle_no, 0)
+      length = self.params.get("fast_cycle_%s_length" % cycle_no, 0)
 
-        decel_percentage = 0.20
+      minute_start = int(math.ceil(tominute(start) - tominute(prelength)))
+      minute_stop = int(math.ceil(tominute(start) + tominute(length)))
 
-        if length == 0 or pos_in_cycle > length or pos_in_cycle < 0:
-          return
+      for m in range(minute_start, minute_stop + 1):
+        self.angles[m%92]["BACK"] = start
 
-        #lock on start position
-        if pos_in_cycle < decel_percentage * length:
-          self.angles[m]["BACK"] = start
+      self.angles[(minute_start-1)%92]["BACK"] = start - (minute_start - (tominute(start) - tominute(prelength)))*60*math.radians(0.10)
+      self.angles[(minute_start+1)%92]["BACK"] = start - (minute_stop - (tominute(start) + tominute(length)))*60*math.radians(0.10)
 
-        #go straight to target, curve fitting happens later
-        else:
-          self.angles[m]["BACK"] = start+length
-
-      set_cycle_velocity_diff(self.params["fast_cycle_1_start"], self.params["fast_cycle_1_length"])
-
-      set_cycle_velocity_diff(self.params["fast_cycle_2_start"], self.params["fast_cycle_2_length"])
-
-      set_cycle_velocity_diff(self.params.get("fast_cycle_3_start",0), self.params.get("fast_cycle_2_length",0))
+    for i in range(1, 7):
+      set_cycle_velocity_diff(i)
 
 
   def optimizePanelAnglesNew(self):
@@ -369,6 +432,12 @@ class ISS:
     width_between_blankets = 1927.51
     
     blanket_width = 4752.25
+
+    border_to_blanket = 133.75 + 94
+
+    #TODO wtf
+    if self.beta>math.radians(73.9):
+      border_to_blanket = 0
 
     for m in range(0, 92):
       self.setMinute(m)
@@ -381,46 +450,64 @@ class ISS:
 
         if p in self.listFrontPanels():
 
+          axis_z = {"3B":-67, "1A":-67, "2A": -67, "4B":-67, "3A": 5, "1B": 5, "4A": 0, "2B": 0}[p]
+
           #TODO z
           saw_distance = {"3B":15063, "1A":15063, "2A": 15069, "4B":15069, "3A": 15072, "1B": 15072, "4A": 15070, "2B": 15070}[p]
 
           sun_angle = pi/2 - vect2angle(sun)[1] #-atan(sun[2] / sun[1])
           shaded_panel = self.panelshades[p]
 
-          shaded_panel_opening_y = sin(self.angles[m][shaded_panel]) * (width_between_blankets / 2)
-          shaded_panel_opening_x = cos(self.angles[m][shaded_panel]) * (width_between_blankets / 2)
+          shaded_panel_opening_y = sin(self.angles[m][shaded_panel]) * (width_between_blankets / 2 + border_to_blanket)
+          shaded_panel_opening_x = cos(self.angles[m][shaded_panel]) * (width_between_blankets / 2 + border_to_blanket)
 
           remaining_x = shaded_panel_opening_y / tan(sun_angle)
 
-          panel_top_y = tan(sun_angle) * (remaining_x + shaded_panel_opening_x + saw_distance)
+          saw_to_sun_contact = remaining_x + shaded_panel_opening_x + saw_distance
+
+          panel_top_y = tan(sun_angle) * saw_to_sun_contact
 
           panel_width = (width_between_blankets / 2) + blanket_width
 
-          #Can't optimize the shades!
-          if math.fabs(panel_top_y) > panel_width:
+          """
+          if p == "2B":
+            print
+            print m
+            print sun_angle
+            print asin(panel_width/saw_to_sun_contact)
+            print remaining_x
+            print panel_top_y, panel_width
+            print shaded_panel_opening_y, shaded_panel_opening_x
+            print shaded_panel
+            print tan(sun_angle)
+            print sin(pi / 2 - sun_angle) * panel_top_y / panel_width
+            print math.fabs(sin(pi / 2 - sun_angle) * panel_top_y / panel_width)>1
+            #print math.degrees(-(asin(sin(pi / 2 - sun_angle) * panel_top_y / panel_width) - sun_angle) - pi/2)%360
+            print self.angles[m][shaded_panel]
+          """
+
+          #Can't optimize the shades (limit case is rect triangle)
+          #if pi-asin(panel_width/saw_to_sun_contact)>sun_angle:
+          #  continue
+          if math.fabs(sin(pi / 2 - sun_angle) * panel_top_y / panel_width)>1:
             continue
-
-          #print
-          #print panel_top_y, panel_width
-          #print tan(sun_angle)
-          #print sin(pi / 2 - sun_angle) * panel_top_y / panel_width
-
 
           panel_angle = asin(sin(pi / 2 - sun_angle) * panel_top_y / panel_width) - sun_angle
 
-          #
 
-          self.angles[m][p] = panel_angle #(self.angles[m][p]+9*panel_angle)/10
+          self.angles[m][p] = panel_angle # -74: 0.12 #TODO!!! #(self.angles[m][p]+9*panel_angle)/10
 
 
-  def optimizePanelAngles(self):
+
+
+  def patchPanelAngles(self):
 
     for m in range(0, 92):
       for p in self.panels:
         if p in self.listFrontPanels():
-          self.angles[m][p] += self.params["frontpanels_angle"]
+          self.angles[m][p] += self.params.get("frontpanels_angle", 0)
         else:
-          self.angles[m][p] += self.params["backpanels_angle"]
+          self.angles[m][p] += self.params.get("backpanels_angle", 0)
 
 
   def correctPanelsForSarj(self):
@@ -511,7 +598,12 @@ class ISS:
 
 if __name__ == "__main__":
 
+  import sys
+
   obj = ISS()
-  obj.getInitialOrientation(-74)
+  if len(sys.argv)>1:
+    obj.getInitialOrientation(sys.argv[1])
+  else:
+    obj.getInitialOrientation(74)
   for i in range(0, 92):
-    print "%d %s" % (i, ["%2.6f" % x for x in obj.getStateAtMinute(i)])
+    print "%d %s" % (i, ["%2.14f" % x for x in obj.getStateAtMinute(i)])
