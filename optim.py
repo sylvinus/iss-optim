@@ -79,7 +79,7 @@ VARS = [
 
 rng = "0-91"
 if len(sys.argv)>2:
-  range = sys.argv[2]
+  rng = sys.argv[2]
   start_range = int(rng.split("-")[0])
   stop_range = int(rng.split("-")[1])
 
