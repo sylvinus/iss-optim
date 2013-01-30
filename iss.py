@@ -11,11 +11,17 @@ TODO
 
 # Parameters are determined in function of the beta angle.
 # There is a fixed list of beta angles so we can over-optimize for that...
-PARAMS = {"-70": {"backpanels_angle": -0.0014026374642177606, "fast_cycle_3_start": 2.237929382275514, "fast_cycle_3_prelength": 0.6166746766006286, "fast_cycle_4_length": 0.07166235965547048, "fast_cycle_2_start": 0.6895750308475449, "fast_cycle_4_start": 4.285508941497646, "fast_cycle_2_prelength": 0.06295149295285885, "fast_cycle_6_length": 0.22315927730537782, "fast_cycle_1_start": 0.1759508632978138, "fast_cycle_1_length": 0.6935248861025821, "fast_cycle_5_prelength": 0.08173443464544534, "fast_cycle_5_start": 2.832121025678209, "fast_cycle_5_length": 0.5634218448077157, "fast_cycle_6_prelength": 0.17252622656447325, "fast_cycle_2_length": 0.35373380958548906, "fast_cycle_6_start": 4.898824827044014, "fast_cycle_4_prelength": 0.5534151889537027, "frontpanels_angle": -0.0038904449964589625, "yaw": 0.0414804736024119, "fast_cycle_3_length": 0.7008364263314133, "fast_cycle_1_prelength": 0.9344070980381314},
- "72": {"backpanels_angle": -0.02032409144504553, "fast_cycle_3_start": 1.9179132087585402, "fast_cycle_3_prelength": 0.6720849953137594, "fast_cycle_4_length": 0.019490166270924144, "fast_cycle_2_start": 0.8954338239552325, "fast_cycle_4_start": 4.370219485764188, "fast_cycle_2_prelength": 0.28037852347261194, "fast_cycle_6_length": 0.24433323024728826, "fast_cycle_1_start": 0.016893475792793506, "fast_cycle_1_length": 0.03993646661426549, "fast_cycle_5_prelength": 0.6163168265418921, "fast_cycle_5_start": 2.903707578725052, "fast_cycle_5_length": 0.3152570215448386, "fast_cycle_6_prelength": 0.40040928196960496, "fast_cycle_2_length": 0.46515020825356856, "fast_cycle_6_start": 4.899632661924799, "fast_cycle_4_prelength": 0.5236651653653963, "frontpanels_angle": 0.011895802947803263, "yaw": 0.0001777557132575147, "fast_cycle_3_length": 0.40059491989964013, "fast_cycle_1_prelength": 0.5863264558380866},
- "74": {"backpanels_angle": -0.06425284635424487, "fast_cycle_3_start": 2.225200835647714, "fast_cycle_3_prelength": 0.003315289454355025, "fast_cycle_4_length": 0.024308427097226342, "fast_cycle_2_start": 0.820239331043713, "fast_cycle_4_start": 4.615481260894112, "fast_cycle_2_prelength": 0.5649022850943893, "fast_cycle_6_length": 0.2178386535284853, "fast_cycle_1_start": 0.0859978840153225, "fast_cycle_1_length": 0.3915483117365642, "fast_cycle_5_prelength": 0.003866266663166723, "fast_cycle_5_start": 2.958118920980893, "fast_cycle_5_length": 0.30318154576694, "fast_cycle_6_prelength": 0.21170048431356975, "fast_cycle_2_length": 0.028139875005793187, "fast_cycle_6_start": 5.0385427983053805, "fast_cycle_4_prelength": 0.5031835137957196, "frontpanels_angle": 0.017089584708456763, "yaw": 0.0, "fast_cycle_3_length": 0.02092372384431028, "fast_cycle_1_prelength": 0.6951678499746428},
- "-74": {"backpanels_angle": 0.06132910592461452, "fast_cycle_3_start": 1.9983016826923432, "fast_cycle_3_prelength": 0.22044160746709926, "fast_cycle_4_length": 0.361422243194243, "fast_cycle_2_start": 0.40977295481606, "fast_cycle_4_start": 4.745282814110465, "fast_cycle_2_prelength": 0.5383338465664779, "fast_cycle_6_length": 0.2802575080475719, "fast_cycle_1_start": 2.7720317689706624, "fast_cycle_1_length": 0.47768584508748724, "fast_cycle_5_prelength": 0.0187932917270459, "fast_cycle_5_start": 2.497828361022921, "fast_cycle_5_length": 0.35909821065937103, "fast_cycle_6_prelength": 0.12824500144311507, "fast_cycle_2_length": 0.023215732759460428, "fast_cycle_6_start": 5.178323186469656, "fast_cycle_4_prelength": 0.3199249359758594, "frontpanels_angle": 0.044207573729101154, "yaw": 0.020688516408021457, "fast_cycle_3_length": 0.3126931834589215, "fast_cycle_1_prelength": 0.2784959548493998}}
+PARAMS = {
+  "-70": {"yaw": 0.0414804736024119},
+  "72": {},
+  "74": {}, #
 
+  #"74": {'backpanels_angle': 0.0, 'sarjp_20': 1.3659098493868667, 'sarjd_0': 0.0, 'frontpanels_angle': 0.0, 'sarjd_4': 1.5e-08, 'sarjp_0': 0.0, 'sarjd_8': 0.0, 'sarjd_20': 0.0, 'sarjp_16': 1.0927278795094932, 'sarjp_4': 0.2731819698773733, 'sarjd_16': 0.0, 'sarjd_12': 0.0, 'sarjp_12': 0.81954590963212, 'yaw': 0.0, 'sarjp_8': 0.5463639397547466},
+  "-74": {'backpanels_angle': 0.0, 'sarjp_88': 6.010003337302213, 'frontpanels_angle': 0.0, 'sarjp_76': 5.1904574276700925, 'yaw': 0.0, 'sarjp_84': 5.73682136742484, 'sarjp_72': 4.91727545779272, 'sarjp_80': 5.463639397547467, 'sarjd_88': 0.09980169453665413, 'sarjd_76': 0.04755573252634239, 'sarjd_84': 0.27802493708675613, 'sarjd_72': 0.0218595336528105, 'sarjd_80': -0.13369379817122287}
+}
+
+
+DEBUG=False
 
 
 def smallradians(radians):
@@ -108,7 +114,7 @@ class ISS:
   def getInitialOrientation(self, beta):
     self.params = self.paramsArray[str(int(float(beta)))]
     self.beta = math.radians(float(beta))
-    self.yaw = self.params["yaw"]
+    self.yaw = self.params.get("yaw",0)
 
     if self.beta>0:
       self.panelshades = {
@@ -174,7 +180,9 @@ class ISS:
         "BACK": 0
       })
 
-    self.optimizeSarjAngles()
+    #self.optimizeSarjAngles()
+
+    self.optimizeSarjAnglesLinear()
 
     #for m in range(0, 92):
 
@@ -251,11 +259,11 @@ class ISS:
     for p in self.angles[0]:
 
       if p in self.sarjs:
-        max_velocity = math.radians(0.15)
-        max_accel = math.radians(0.005)
+        max_velocity = math.radians(0.15)-1e-7
+        max_accel = math.radians(0.005)-1e-7
       elif p in self.panels:
-        max_velocity = math.radians(0.25)
-        max_accel = math.radians(0.01)
+        max_velocity = math.radians(0.25)-1e-7
+        max_accel = math.radians(0.01)-1e-7
 
       if (sarj and p in self.sarjs) or (saw and p in self.panels):
         for m in range(0, 92):
@@ -281,8 +289,8 @@ class ISS:
       minShift = 0
       t1 = (speed1 - minSpeed) / maxAcc
       t2 = 60 - (speed2 - minSpeed) / maxAcc
-      #if m==8 and p=="BACK":
-      #  print t1, t2
+      if DEBUG and m==1 and p=="FRONT":
+        print minSpeed, speed1, t1, t2
       if (t1 <= t2):
         minShift += path(t1, speed1, -maxAcc)
         minShift += path(t2 - t1, minSpeed, 0)
@@ -297,8 +305,7 @@ class ISS:
       maxShift = 0
       t1 = (maxSpeed - speed1) / maxAcc
       t2 = 60 - (maxSpeed - speed2) / maxAcc
-      #if m==8 and p=="BACK":
-      #  print maxSpeed, speed1, t1, t2
+
       if (t1 <= t2):
          maxShift += path(t1, speed1, maxAcc)
          maxShift += path(t2 - t1, maxSpeed, 0)
@@ -314,18 +321,18 @@ class ISS:
 
 
       if p in self.sarjs and sarj:
-        max_velocity = math.radians(0.15)
-        max_accel = math.radians(0.005)
+        max_velocity = math.radians(0.15)-1e-7
+        max_accel = math.radians(0.005)-1e-7
 
       elif p in self.panels and saw:
-        max_velocity = math.radians(0.25)
-        max_accel = math.radians(0.01)
+        max_velocity = math.radians(0.25)-1e-7
+        max_accel = math.radians(0.01)-1e-7
       else:
         continue
 
       for m in range(0, 92):
 
-        if p in self.sarjs:
+        if True or (p in self.sarjs):
           nextm = (m + 1) % 92
           sign = 1
         else:
@@ -339,24 +346,26 @@ class ISS:
         currentSpeed = self.speeds[m][p]
         finalSpeed = self.speeds[nextm][p]
 
-        max_diff = get_max_possible_angular_shift(currentSpeed, max_velocity, max_velocity-1e-7, max_accel-1e-7)
-        min_diff = get_min_possible_angular_shift(currentSpeed, -max_velocity, -max_velocity+1e-7, -max_accel+1e-7)
+        max_diff = get_max_possible_angular_shift(currentSpeed, max_velocity, max_velocity, max_accel)
+        min_diff = get_min_possible_angular_shift(currentSpeed, -max_velocity, -max_velocity, max_accel)
 
         #can the point be atteinted but not at the same speed?
-        max_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity-1e-7, max_accel-1e-7)
-        min_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity+1e-7, -max_accel+1e-7)
+        max_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity, max_accel)
+        min_diff_w_speed = get_min_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity, max_accel) #TODO sign??
 
-        if diff < min_diff + 1e-12:
+        if diff < min_diff:
+          if DEBUG and m==1 and p=="FRONT":
+            print "min",diff
           self.angles[nextm][p] = sign * (self.angles[m][p] + min_diff)
           self.speeds[nextm][p] = sign * -max_velocity
-        elif diff > max_diff - 1e-12:
+        elif diff > max_diff:
           self.angles[nextm][p] = sign * (self.angles[m][p] + max_diff)# - 1e-9
           self.speeds[nextm][p] = sign * max_velocity
 
-        elif diff > max_diff_w_speed - 1e-12:
+        elif diff > max_diff_w_speed:
           self.angles[nextm][p] = sign * (self.angles[m][p] + max_diff_w_speed)#*(1-1e-9)
 
-        elif diff < min_diff_w_speed + 1e-12:
+        elif diff < min_diff_w_speed:
           self.angles[nextm][p] = sign * (self.angles[m][p] + min_diff_w_speed)#*(1-1e-9)
 
         """
@@ -378,8 +387,8 @@ class ISS:
           self.angles[(m + 1) % 92][p] = self.angles[m][p] + diff0 + newdiff
         """
 
-        """
-        if p=="FRONT" and m==59:
+        
+        if DEBUG and p=="FRONT" and m==1:
           print
           print "minute", m
           print "diff", diff
@@ -393,7 +402,7 @@ class ISS:
           #print "resting diff", lineardiff, newdiff
           #print diff0, newdiff, diff0 + newdiff
           #print get_min_possible_angular_shift(currentSpeed,0, max_velocity, -max_accel)
-        """
+        
         
 
   def adjustFrontSarj(self):
@@ -430,8 +439,53 @@ class ISS:
       self.angles[(minute_start-1)%92]["BACK"] = start - (minute_start - (tominute(start) - tominute(prelength)))*60*math.radians(0.10)
       self.angles[(minute_start+1)%92]["BACK"] = start - (minute_stop - (tominute(start) + tominute(length)))*60*math.radians(0.10)
 
-    for i in range(1, 20):
+    for i in range(1, 100):
       set_cycle_velocity_diff(i)
+
+
+
+  # accelerate back panels (ssarj) when passing behind the station
+  def optimizeSarjAnglesLinear(self):
+
+    def tominute(alpha):
+      return alpha * 92 / (2 * pi)
+
+    points = []
+    for cycle_no in range(1, 100):
+
+      start = self.params.get("sarjp_%s" % cycle_no, 0)
+      length = self.params.get("sarjd_%s" % cycle_no, 0)
+      
+      if length!=0:
+        points.append([start, length])
+
+    if len(points) < 2:
+      return
+
+    # sort by start point
+    points.sort(lambda x, y: cmp(x[0], y[0]))
+    
+    # then each minute is between two points w / linear speed between them
+    for m in range(0,92):
+    
+      pointn = 0
+      for n in range(0,len(points)):
+        if tominute(points[n%len(points)][0])>m:
+          pointn = n
+          break
+
+      nextpoint = points[pointn%len(points)]
+      lastpoint = points[(pointn-1)%len(points)]
+
+      ratio = ((tominute(nextpoint[0]) - m)%92) / ((tominute(nextpoint[0]) - tominute(lastpoint[0]))%92)
+      #print m, ratio
+      #print tominute(nextpoint[0]), tominute(lastpoint[0])
+      #print nextpoint[1], lastpoint[1]
+      #print ratio * (nextpoint[1] - lastpoint[1]) + nextpoint[1]
+      #print
+      self.angles[m]["BACK"] += ratio * (nextpoint[1] - lastpoint[1]) + nextpoint[1]
+
+
 
 
   def optimizePanelAnglesNew(self):
@@ -606,6 +660,8 @@ class ISS:
 if __name__ == "__main__":
 
   import sys
+
+  DEBUG=True
 
   obj = ISS()
   if len(sys.argv)>1:
