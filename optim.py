@@ -74,19 +74,21 @@ VARS = [
 
 
 ]
-test_cycles = True
 
-rng = "0-91"
+rng = ""
+start_range = 0
+stop_range = 0
+
 if len(sys.argv)>2:
   rng = sys.argv[2]
 
-start_range = int(rng.split("-")[0])
-stop_range = min(91,int(rng.split("-")[1]))
+  start_range = int(rng.split("-")[0])
+  stop_range = min(91,int(rng.split("-")[1]))
 
-for i in range(start_range, stop_range):
+for i in range(0,91):
   if i % 4 == 0:
     VARS.append(["sarjp_%s" % i,toalpha(max(0,i-2)),toalpha(min(i+2,91)),False,toalpha(i)])
-    VARS.append(["sarjd_%s" % i, -0.35, 0.35, test_cycles])
+    VARS.append(["sarjd_%s" % i, -0.35, 0.35, i in range(start_range, stop_range)])
 
 
 var_names = [x[0] for x in VARS if x[3]]
