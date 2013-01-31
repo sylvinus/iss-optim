@@ -1,2 +1,3 @@
 #!/bin/sh
-java -Xmx1000M -jar ISSVis.jar -exec ./cli.py -beta $1 -rendering
+rm -rf *.pyc
+java -Xmx1000M -jar ISSVis.jar -exec ./cli.py -beta $1 -rendering -resolution 400

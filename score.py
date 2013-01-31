@@ -5,7 +5,7 @@ import os, sys
 totest = [74, 72, -70, -74]
 
 def getscore(beta):
-
+  os.system("rm -rf *.pyc")
   f = os.popen("java -Xmx1000M -jar ISSVis.jar -exec './cli.py' -beta %s" % beta)
   out = f.read()
   #print out
