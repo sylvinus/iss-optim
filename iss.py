@@ -3,6 +3,11 @@
 from math import cos, sin, tan, acos, asin, atan, pi
 import math
 
+try:
+  from pylab import plot, draw, show, hist
+except:
+  pass
+
 """
 TODO
  - correct for Z offset for SAWs
@@ -11,15 +16,11 @@ TODO
 
 # Parameters are determined in function of the beta angle.
 # There is a fixed list of beta angles so we can over-optimize for that...
-PARAMS = {
-  "-70": {"yaw": 0.0414804736024119},
-  "72": {},
-  "74": {}, #
-
-  #"74": {'backpanels_angle': 0.0, 'sarjp_20': 1.3659098493868667, 'sarjd_0': 0.0, 'frontpanels_angle': 0.0, 'sarjd_4': 1.5e-08, 'sarjp_0': 0.0, 'sarjd_8': 0.0, 'sarjd_20': 0.0, 'sarjp_16': 1.0927278795094932, 'sarjp_4': 0.2731819698773733, 'sarjd_16': 0.0, 'sarjd_12': 0.0, 'sarjp_12': 0.81954590963212, 'yaw': 0.0, 'sarjp_8': 0.5463639397547466},
-  "-74": {'backpanels_angle': 0.0, 'sarjp_88': 6.010003337302213, 'frontpanels_angle': 0.0, 'sarjp_76': 5.1904574276700925, 'yaw': 0.0, 'sarjp_84': 5.73682136742484, 'sarjp_72': 4.91727545779272, 'sarjp_80': 5.463639397547467, 'sarjd_88': 0.09980169453665413, 'sarjd_76': 0.04755573252634239, 'sarjd_84': 0.27802493708675613, 'sarjd_72': 0.0218595336528105, 'sarjd_80': -0.13369379817122287}
-}
-
+PARAMS = {"-70": {"sarjd_12": -0.17770814624297943, "sarjp_20": 1.3659098493868667, "sarjp_44": 3.0050016686511065, "sarjd_28": -0.18234192299077615, "sarjp_40": 2.7318196987737333, "sarjd_24": 0.004570466040045529, "sarjd_20": 0.29762632934120725, "sarjp_48": 3.27818363852848, "sarjd_60": 0.21919145588304217, "sarjd_48": -0.010469537582144132, "sarjd_64": 0.23906345239334198, "sarjd_68": -0.15343975917277974, "sarjd_40": 0.2540202420358353, "sarjd_44": -0.29801845972494295, "backpanels_angle": -0.0005626978728677377, "sarjd_0": -0.23870367391881286, "frontpanels_angle": -0.0018021451210250064, "sarjd_4": 0.0797586293245712, "yaw": 0.0416280513684409, "sarjd_32": 0.07867357948820666, "sarjp_8": 0.5463639397547466, "sarjp_28": 1.9122737891416133, "sarjp_72": 4.91727545779272, "sarjp_24": 1.63909181926424, "sarjp_56": 3.8245475782832266, "sarjp_52": 3.5513656084058534, "sarjp_36": 2.45863772889636, "sarjp_32": 2.1854557590189865, "sarjp_12": 0.81954590963212, "sarjp_84": 5.73682136742484, "sarjd_36": -0.29518411159183006, "sarjp_16": 1.0927278795094932, "sarjd_16": -0.2674489086140967, "sarjp_0": 0.0, "sarjd_76": -0.1526323389301328, "sarjd_52": -0.26690737194872904, "sarjd_72": 0.024018931931874654, "sarjd_56": -0.06009597614831791, "sarjd_84": 0.2999149298722825, "sarjd_8": -0.21263983948941226, "sarjp_76": 5.1904574276700925, "sarjp_4": 0.2731819698773733, "sarjp_80": 5.463639397547467, "sarjp_68": 4.644093487915346, "sarjd_88": 0.2995230580391146, "sarjp_64": 4.370911518037973, "sarjp_88": 6.010003337302213, "sarjp_60": 4.0977295481606, "sarjd_80": 0.22702107145777983},
+ "72": {"sarjd_12": 0.04660243952029262, "sarjp_20": 1.3659098493868667, "sarjp_44": 3.0050016686511065, "sarjd_28": -0.18204667247249318, "sarjp_40": 2.7318196987737333, "sarjd_24": 0.04467067367239206, "sarjd_20": 0.2994263532127694, "sarjp_48": 3.27818363852848, "sarjd_60": 0.2662798664139182, "sarjd_48": 0.03642846898929212, "sarjd_64": 0.23619492335427258, "sarjd_68": -0.1609815310219587, "sarjd_40": -0.12313916126853235, "sarjd_44": -0.18987532167448645, "backpanels_angle": -0.014731268451499838, "sarjd_0": 0.033706121881376325, "frontpanels_angle": 0.005921783893742168, "sarjd_4": 0.11436706241711082, "yaw": 0.0004957706763891608, "sarjd_32": -0.1691250271829811, "sarjp_8": 0.5463639397547466, "sarjp_28": 1.9122737891416133, "sarjp_72": 4.91727545779272, "sarjp_24": 1.63909181926424, "sarjp_56": 3.8245475782832266, "sarjp_52": 3.5513656084058534, "sarjp_36": 2.45863772889636, "sarjp_32": 2.1854557590189865, "sarjp_12": 0.81954590963212, "sarjp_84": 5.73682136742484, "sarjd_36": -0.14567316748739412, "sarjp_16": 1.0927278795094932, "sarjd_16": -0.1682710649243153, "sarjp_0": 0.0, "sarjd_76": -0.06324744929934911, "sarjd_52": -0.20336694960181267, "sarjd_72": 0.12898535560733598, "sarjd_56": 0.20998818941187436, "sarjd_84": 0.2830994962737556, "sarjd_8": 0.185591296234241, "sarjp_76": 5.1904574276700925, "sarjp_4": 0.2731819698773733, "sarjp_80": 5.463639397547467, "sarjp_68": 4.644093487915346, "sarjd_88": 0.261109791732945, "sarjp_64": 4.370911518037973, "sarjp_88": 6.010003337302213, "sarjp_60": 4.0977295481606, "sarjd_80": -0.17855023094124917},
+ "74": {"sarjd_12": 0.09614519477998802, "sarjp_20": 1.3659098493868667, "sarjp_44": 3.0050016686511065, "sarjd_28": -0.03447155697763723, "sarjp_40": 2.7318196987737333, "sarjd_24": 0.051031081254910744, "sarjd_20": 0.29681878914596166, "sarjp_48": 3.27818363852848, "sarjd_60": 0.14014930622132693, "sarjd_48": 0.03032968966735536, "sarjd_64": 0.29865609726706777, "sarjd_68": -0.05423205538037699, "sarjd_40": -0.04128281866781282, "sarjd_44": -0.2143889947683093, "backpanels_angle": -0.11105314394448565, "sarjd_0": -0.13598495157710686, "frontpanels_angle": 0.02111383346866192, "sarjd_4": 0.13767633750731653, "yaw": 0.0, "sarjd_32": 0.02651786729399566, "sarjp_8": 0.5463639397547466, "sarjp_28": 1.9122737891416133, "sarjp_72": 4.91727545779272, "sarjp_24": 1.63909181926424, "sarjp_56": 3.8245475782832266, "sarjp_52": 3.5513656084058534, "sarjp_36": 2.45863772889636, "sarjp_32": 2.1854557590189865, "sarjp_12": 0.81954590963212, "sarjp_84": 5.73682136742484, "sarjd_36": -0.108437565836883, "sarjp_16": 1.0927278795094932, "sarjd_16": -0.1226370567570091, "sarjp_0": 0.0, "sarjd_76": -0.09483521909243034, "sarjd_52": -0.14663286999684685, "sarjd_72": 0.14292693002490608, "sarjd_56": 0.20358364136321183, "sarjd_84": 0.27900085185021456, "sarjd_8": 0.12371354048387162, "sarjp_76": 5.1904574276700925, "sarjp_4": 0.2731819698773733, "sarjp_80": 5.463639397547467, "sarjp_68": 4.644093487915346, "sarjd_88": 0.2813639307840698, "sarjp_64": 4.370911518037973, "sarjp_88": 6.010003337302213, "sarjp_60": 4.0977295481606, "sarjd_80": -0.12327857178581807},
+ "-74": {"sarjd_12": -0.11250737650394071, "sarjp_20": 1.3659098493868667, "sarjp_44": 3.0050016686511065, "sarjd_28": -0.1603235144746309, "sarjp_40": 2.7318196987737333, "sarjd_24": -0.021540932246100597, "sarjd_20": 0.2991344606929204, "sarjp_48": 3.27818363852848, "sarjd_60": -0.0002904540082842228, "sarjd_48": -0.07691025079874836, "sarjd_64": 0.29193726297206113, "sarjd_68": -0.29173783024371236, "sarjd_40": -0.2753268252941663, "sarjd_44": -0.26769145134795125, "backpanels_angle": 0.08293409480542584, "sarjd_0": 0.28490838153190784, "frontpanels_angle": 0.038949912370479095, "sarjd_4": 0.0771028304964696, "yaw": 0.02099660013660592, "sarjd_32": -0.0460351553846802, "sarjp_8": 0.5463639397547466, "sarjp_28": 1.9122737891416133, "sarjp_72": 4.91727545779272, "sarjp_24": 1.63909181926424, "sarjp_56": 3.8245475782832266, "sarjp_52": 3.5513656084058534, "sarjp_36": 2.45863772889636, "sarjp_32": 2.1854557590189865, "sarjp_12": 0.81954590963212, "sarjp_84": 5.73682136742484, "sarjd_36": -0.17516701888875963, "sarjp_16": 1.0927278795094932, "sarjd_16": -0.1826886480892882, "sarjp_0": 0.0, "sarjd_76": -0.1873847569592944, "sarjd_52": -0.2848656787874202, "sarjd_72": 0.013958834602915726, "sarjd_56": -0.06489327906415357, "sarjd_84": 0.12610682612486412, "sarjd_8": 0.08713961639018108, "sarjp_76": 5.1904574276700925, "sarjp_4": 0.2731819698773733, "sarjp_80": 5.463639397547467, "sarjp_68": 4.644093487915346, "sarjd_88": 0.20207489452371433, "sarjp_64": 4.370911518037973, "sarjp_88": 6.010003337302213, "sarjp_60": 4.0977295481606, "sarjd_80": -0.18931981362533032}}
+ 
 
 DEBUG=False
 
@@ -184,14 +185,23 @@ class ISS:
 
     self.optimizeSarjAnglesLinear()
 
+
     #for m in range(0, 92):
 
 
     self.adjustVelocities(sarj=True)
-    
+
     self.adjustFrontSarj()
 
     self.adjustVelocities(sarj=True)
+
+    if DEBUG:
+      #plot([x["BACK"] for x in self.angles])
+      
+      plot([self.params.get("sarjd_%s"%i,0) for i in range(0,92) if i%4==0])
+      show()
+    
+
 
       #self.correctPanelsForSarj()
 
@@ -259,11 +269,11 @@ class ISS:
     for p in self.angles[0]:
 
       if p in self.sarjs:
-        max_velocity = math.radians(0.15)-1e-7
-        max_accel = math.radians(0.005)-1e-7
+        max_velocity = math.radians(0.15)
+        max_accel = math.radians(0.005)
       elif p in self.panels:
-        max_velocity = math.radians(0.25)-1e-7
-        max_accel = math.radians(0.01)-1e-7
+        max_velocity = math.radians(0.25)
+        max_accel = math.radians(0.01)
 
       if (sarj and p in self.sarjs) or (saw and p in self.panels):
         for m in range(0, 92):
@@ -289,8 +299,8 @@ class ISS:
       minShift = 0
       t1 = (speed1 - minSpeed) / maxAcc
       t2 = 60 - (speed2 - minSpeed) / maxAcc
-      if DEBUG and m==1 and p=="FRONT":
-        print minSpeed, speed1, t1, t2
+      #if DEBUG and m==1 and p=="FRONT":
+      #  print minSpeed, speed1, t1, t2
       if (t1 <= t2):
         minShift += path(t1, speed1, -maxAcc)
         minShift += path(t2 - t1, minSpeed, 0)
@@ -321,19 +331,25 @@ class ISS:
 
 
       if p in self.sarjs and sarj:
-        max_velocity = math.radians(0.15)-1e-7
-        max_accel = math.radians(0.005)-1e-7
+        max_velocity = math.radians(0.15)*0.999999999 # This is to avoid rounding errors
+        max_accel = math.radians(0.005)*0.999999999
 
       elif p in self.panels and saw:
-        max_velocity = math.radians(0.25)-1e-7
-        max_accel = math.radians(0.01)-1e-7
+        max_velocity = math.radians(0.25)*0.999999999
+        max_accel = math.radians(0.01)*0.999999999
       else:
         continue
 
-      for m in range(0, 92):
+      for m in range(0, 92*3):
+
+        PRINTOUT = (DEBUG and p=="BACK" and (m%92)==75)
+
+
+
 
         if True or (p in self.sarjs):
           nextm = (m + 1) % 92
+          cm = m % 92
           sign = 1
         else:
           #go in reverse for saws!
@@ -341,32 +357,44 @@ class ISS:
           nextm = (m - 1) % 92
           sign = -1
 
-        diff = smallradians(self.angles[nextm][p] - self.angles[m][p])
+        if PRINTOUT:
+          
+          print "angles", self.angles[(m + 1) % 92][p], self.angles[(cm) % 92][p], self.angles[(m + 1) % 92][p] - self.angles[(cm) % 92][p]
+          
 
-        currentSpeed = self.speeds[m][p]
+
+        diff = smallradians(self.angles[nextm][p] - self.angles[cm][p])
+
+        currentSpeed = self.speeds[cm][p]
         finalSpeed = self.speeds[nextm][p]
 
         max_diff = get_max_possible_angular_shift(currentSpeed, max_velocity, max_velocity, max_accel)
         min_diff = get_min_possible_angular_shift(currentSpeed, -max_velocity, -max_velocity, max_accel)
 
         #can the point be atteinted but not at the same speed?
-        max_diff_w_speed = get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity, max_accel)
-        min_diff_w_speed = get_min_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity, max_accel) #TODO sign??
+        max_diff_w_speed = max(get_min_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity, max_accel),get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity, max_accel))
+        min_diff_w_speed = min(get_max_possible_angular_shift(currentSpeed, finalSpeed, max_velocity, max_accel),get_min_possible_angular_shift(currentSpeed, finalSpeed, -max_velocity, max_accel))
 
-        if diff < min_diff:
-          if DEBUG and m==1 and p=="FRONT":
-            print "min",diff
-          self.angles[nextm][p] = sign * (self.angles[m][p] + min_diff)
+        if diff <= (min_diff):
+          if PRINTOUT:
+            print " - min", diff, min_diff
+          self.angles[nextm][p] = sign * (self.angles[cm][p] + min_diff)
           self.speeds[nextm][p] = sign * -max_velocity
-        elif diff > max_diff:
-          self.angles[nextm][p] = sign * (self.angles[m][p] + max_diff)# - 1e-9
+        elif diff >= (max_diff):
+          if PRINTOUT:
+            print " - max"
+          self.angles[nextm][p] = sign * (self.angles[cm][p] + max_diff)
           self.speeds[nextm][p] = sign * max_velocity
 
-        elif diff > max_diff_w_speed:
-          self.angles[nextm][p] = sign * (self.angles[m][p] + max_diff_w_speed)#*(1-1e-9)
+        elif diff >= max_diff_w_speed:
+          if PRINTOUT:
+            print " - max-w-speed"
+          self.angles[nextm][p] = sign * (self.angles[cm][p] + max_diff_w_speed)
 
-        elif diff < min_diff_w_speed:
-          self.angles[nextm][p] = sign * (self.angles[m][p] + min_diff_w_speed)#*(1-1e-9)
+        elif diff <= min_diff_w_speed :
+          if PRINTOUT:
+            print " - min-w-speed"
+          self.angles[nextm][p] = sign * (self.angles[cm][p] + min_diff_w_speed)
 
         """
         elif (diff > max_diff_w_speed) or (diff < min_diff_w_speed):
@@ -388,16 +416,18 @@ class ISS:
         """
 
         
-        if DEBUG and p=="FRONT" and m==1:
-          print
+        if PRINTOUT:
+          
           print "minute", m
           print "diff", diff
           print "max_diffs", max_diff, min_diff
           print "max_diffs_w_speed", max_diff_w_speed, min_diff_w_speed
           
           print "speeds", currentSpeed, finalSpeed
-          print "angles", self.angles[(m + 1) % 92][p], self.angles[(m) % 92][p], self.angles[(m + 1) % 92][p] - self.angles[(m) % 92][p]
-
+          print "angles", self.angles[(m + 1) % 92][p], self.angles[(cm) % 92][p]
+          print "final diff", self.angles[(m + 1) % 92][p] - self.angles[(cm) % 92][p]
+          print "max diff", get_max_possible_angular_shift(self.speeds[cm][p], self.speeds[nextm][p], max_velocity, max_accel)
+          print
           #print "time to speed",t0, diff0
           #print "resting diff", lineardiff, newdiff
           #print diff0, newdiff, diff0 + newdiff

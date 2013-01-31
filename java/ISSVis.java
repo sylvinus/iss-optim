@@ -225,7 +225,7 @@ for (int t=0; t < NUM_STATES; t++)
          {
          errors.add("It is impossible to make a transition between" +
                           " your SARJ configurations from minute " + t +
-                          " to minute " + tt + ". SARJ = " + SARJ_NAME[i] + ".");
+                          " to minute " + tt + ". SARJ = " + SARJ_NAME[i] + ". : " + ret[0]+" angle1="+angleSARJ[t][i]+" angle2="+angleSARJ[tt][i]+" speed1="+speedSARJ[t][i]+" speed2="+speedSARJ[tt][i]);
          }
       rotSARJ[t][i] = ret[1];
       }
@@ -243,7 +243,7 @@ for (int t=0; t < NUM_STATES; t++)
          errors.add("It is impossible to make a transition" +
                           " between your BGA configurations from minute " + 
                           t + " to minute " + tt + ". BGA = " + 
-                    SOLAR_ARRAY_NAME[i] + ".");
+                    SOLAR_ARRAY_NAME[i] + ". : " + ret[0]);
          }
       rotBGA[t][i] = ret[1];
       }
@@ -477,9 +477,13 @@ boolean canMakeTransition ( double shift, double speed1,
                             double maxSpeed, double maxAcc ) 
 // =============================================
 {
+
 // simple acceleration check
-if (Math.abs((speed2 - speed1) / TIME_PER_STATE) > maxAcc + EPS)
+if (Math.abs((speed2 - speed1) / TIME_PER_STATE) > maxAcc + EPS) {
+   errors.add("Simple accel check failed");
    return false;
+}
+
 
 double minShift = 0.0, maxShift = 0.0;
 
@@ -514,6 +518,15 @@ else
    maxShift += path(t, speed1, maxAcc);
    maxShift += path(TIME_PER_STATE - t, speed1 + maxAcc * t, -maxAcc);
    }
+
+if (minShift > shift) {
+   errors.add("Bad minshift, " + minShift + " "+shift+" "+speed1+" "+speed2+" "+minSpeed+" "+maxAcc);
+}
+
+if (shift > maxShift +EPS) {
+   errors.add("Bad maxshift, " + maxShift + " "+shift+" "+speed1+" "+speed2+" "+maxSpeed+" "+maxAcc);
+   errors.add("minshift, " + minShift + " "+shift+" "+speed1+" "+speed2+" "+minSpeed+" "+maxAcc);
+}
 
 // validate
 return (minShift <= shift && shift <= maxShift +EPS);
