@@ -3,7 +3,7 @@
 import os, sys
 
 totest = [74, 72, -70, -74]
-totest = [75,-75,73,-73,71,-71]
+#totest = [75,-75,73,-73,71,-71]
 
 def getscore(beta):
   os.system("rm -rf *.pyc")

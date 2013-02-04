@@ -18,5 +18,5 @@ sys.stdout.flush()
 
 for minute in range(0, 92):
   print "1"
-  print "\n".join([("%9.50f" % f) for f in obj.getStateAtMinute(minute)])
+  print "\n".join([str(f) for f in obj.getStateAtMinute(minute)]) #("%9.50f" % f)
   sys.stdout.flush()
