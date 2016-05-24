@@ -2,8 +2,9 @@
 
 import pymongo
 import json
+import os
 
-mongoClient = pymongo.MongoClient("mongodb://iss:station@linus.mongohq.com:10066/iss-results")
+mongoClient = pymongo.MongoClient(os.getenv("MONGODB_URI"))
 DB = mongoClient["iss-results"]
 
 ranges = {}
