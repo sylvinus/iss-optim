@@ -104,7 +104,7 @@ startPoint = [PARAMS[str(beta)].get(v, 0) for v in var_names]
 
 DB=False
 try:
-  mongoClient = pymongo.MongoClient("mongodb://iss:station@linus.mongohq.com:10066/iss-results")
+  mongoClient = pymongo.MongoClient(os.getenv("MONGODB_URI"))
   DB = mongoClient["iss-results"]
 except Exception, e:
   print "No Mongo: %s" % e
